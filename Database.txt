@@ -1,0 +1,49 @@
+#MySql Querries:
+Follow Steps 
+
+1) Create database nustmedicalcentre;
+
+2) Create table doctor(DoctorID int primary key, DrName varchar(50), Address varchar (100), Gender varchar(6), Specializton varchar(100),    Experience varchar(10), RoomNo varchar(10), ContactNo varchar(13));
+
+3) Create table doctoremail(DoctorID int, Email varchar(80) , constraint frn_key1 Foreign Key (DoctorID) references doctor(DoctorID));
+
+4) Create view doctorview as Select * from doctor natural join doctoremail;
+
+5) Create table patientrecord(patient_id int primary key, patient_name varchar(40), hostel varchar(30), gender varchar(7), school         varchar(50), semester varchar(10));
+
+6) Create table patientappoint(patient_id int , doctor_id int, visitat date default(current_date()), Contact_no varchar(20),
+   Constraint frn_key2 Foreign Key(patient_id) references patientrecord(patient_id));
+
+7) Create table patients(patient_id int, patient_name varchar(50), gender varchar(7));
+
+8) Create view patientsview as Select * from patientrecord natural join patientappoint ;
+
+9) Create table prescription(ID int, tablet1 varchar(40), tablet2 varchar(40), tablet3 varchar(40), tablet4 varchar(40), noofdays int,    Date date default(current_date()));
+
+10) Create table staff(staff_id int primary key, name varchar(50), gender(6));
+
+11) Create table staffcontacts(email varchar(50), contactno varchar(13), staff_id int, constraint frn_key3 Foreign Key (staff_id)        references staff(staff_id));
+
+12) Create staffview as Select * from staff natural join staffcontacts;
+
+13) Create table users(Username varchar(50), Password varchar(50), Usertype varchar(50), constraint Primary Key(Username, Password));
+
+14) Create view userview as Select Username, Usertype from users;
+
+15) Create procedure SearchDoctor(ID int) Select * from doctorview where DoctorID = ID;
+
+16) Create procedure SearchPatient(ID int) Select * from patientsview where patient_id = ID;
+
+17) Create procedure SearchPatientPrescription(P_ID int) Select * from prescription where ID = P_ID;
+
+18) Create procedure SearchStaff(ID int) Select * from staffview where staff_id = ID;
+
+19) Create procedure TotalPatients() Select "TotalPatients",count(patient_id) from patientsview;
+
+20) Create trigger patienttrigger after insert on patientrecord for each row Insert into patients values(new.patient_id,        new.patient_name, new.gender);  
+
+21) Create trigger patientUpdate after Update on patientsview for each row Update set patient_name = new.patient_name, 
+    gender = new.gender;
+
+22) Alter table users add column ID int;
+
